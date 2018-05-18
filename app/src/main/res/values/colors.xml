@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="navbarBlue">#086CA2</color>
+    <color name="backgroundBlue">#4E94B9</color>
+    <color name="foregroundPurple">#5c66c4</color>
+    <color name="lightOrange">#ff8b00</color>
+    <color name="darkOrange">#FF8B00</color>
+    <color name="lightText">#FFFFFF</color>
+    <color name="darkText">#000000</color>
+    <color name="backgroundGray">#f0f0f0</color>
+    <color name="accentGreen">#25d500</color>
+    <color name="accentYellow">#ffc600</color>
+    <color name="accentRed">##ff1405</color>
+
+</resources>
