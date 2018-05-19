@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#086CA2</color>
     <color name="colorPrimaryDark">#086CA2</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#111C86</color>
 
     <color name="navbarBlue">#086CA2</color>
     <color name="backgroundBlue">#4E94B9</color>

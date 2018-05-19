@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.rileystech.gurpay">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,14 +16,14 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".SelectGroup"
+            android:name=".activity.SelectGroup"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Dashboard" />
-        <activity android:name=".EditUser" />
-        <activity android:name=".EditGroup" />
-        <activity android:name=".NewBill"/>
-     
-        <activity android:name=".BillView">
+        <activity android:name=".activity.Dashboard" />
+        <activity android:name=".activity.EditUser" />
+        <activity android:name=".activity.EditGroup" />
+        <activity android:name=".activity.NewBill" />
+        <activity android:name=".activity.BillView"/>
+        <activity android:name=".activity.BillList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

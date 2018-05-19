@@ -1,13 +1,15 @@
-package com.rileystech.gurpay;
+package com.rileystech.gurpay.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class EditUser extends AppCompatActivity {
+import com.rileystech.gurpay.R;
+
+public class EditGroup extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_user);
+        setContentView(R.layout.activity_edit_group);
     }
 }

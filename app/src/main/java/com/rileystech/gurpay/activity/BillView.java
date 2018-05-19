@@ -1,4 +1,4 @@
-package com.rileystech.gurpay;
+package com.rileystech.gurpay.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,6 +6,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+import com.rileystech.gurpay.network.*;
+
+import com.rileystech.gurpay.R;
 
 public class BillView extends AppCompatActivity {
 
@@ -13,6 +16,7 @@ public class BillView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill_view);
+
     }
 
     @Override

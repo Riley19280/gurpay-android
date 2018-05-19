@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundBlue"
     android:orientation="vertical"
-    tools:context=".Dashboard">
+    tools:context=".activity.Dashboard">
 
     <android.support.v7.widget.CardView
         android:id="@+id/billDetail"
