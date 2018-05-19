@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#086CA2</color>
+    <color name="colorPrimaryDark">#086CA2</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="navbarBlue">#086CA2</color>
@@ -14,6 +14,6 @@
     <color name="backgroundGray">#f0f0f0</color>
     <color name="accentGreen">#25d500</color>
     <color name="accentYellow">#ffc600</color>
-    <color name="accentRed">##ff1405</color>
+    <color name="accentRed">#ff1405</color>
 
 </resources>

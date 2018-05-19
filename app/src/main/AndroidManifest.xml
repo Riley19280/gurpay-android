@@ -9,7 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SelectGroup">
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <activity
+            android:name=".SelectGroup"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Dashboard" />
+        <activity android:name=".EditUser" />
+        <activity android:name=".EditGroup" />
+        <activity android:name=".NewBill"/>
+     
+        <activity android:name=".BillView">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
