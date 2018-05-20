@@ -3,9 +3,7 @@ package com.rileystech.gurpay.network;
 import android.content.Context;
 
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.rileystech.gurpay.models.APIError;
 import com.rileystech.gurpay.models.User;
 
 import org.json.JSONObject;
@@ -19,16 +17,22 @@ public class NetworkUser {
         Map<String, String> params = new HashMap<>();
         params.put("id", ident);
 
-        NetworkBase.wrapper(ctx, "", params, Request.Method.GET, new NetworkResponse() {
+        NetworkBase.executeRequest(ctx, "user/1",  Request.Method.GET, params,NetworkBase.getHeaders(ctx), new NetworkResponse() {
             @Override
             public void success(JSONObject json) {
 
-                User u = new User();
-                resp.success(u);
+                try {
+                    User u = new User(json.getInt("id"),json.getString("name"));
+                    resp.success(u);
+                }
+                catch (Exception e) {
+                    error(new APIError("An error occurred while parsing the json."));
+                }
+
             }
 
             @Override
-            public void error(String error) {
+            public void error(APIError error) {
                 resp.error(error);
             }
         });

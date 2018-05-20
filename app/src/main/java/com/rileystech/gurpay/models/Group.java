@@ -2,8 +2,8 @@ package com.rileystech.gurpay.models;
 
 public class Group {
 
-    String code;
-    String name;
+    public String code;
+    public String name;
 
     public Group(String name, String code){
         this.name = name;

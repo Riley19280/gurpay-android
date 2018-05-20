@@ -3,7 +3,9 @@ package com.rileystech.gurpay.network;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
+import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -11,9 +13,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.rileystech.gurpay.Util;
+import com.rileystech.gurpay.models.APIError;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class NetworkBase {
@@ -24,8 +30,32 @@ public class NetworkBase {
 
     static String baseURL = "https://rileystech.com/gurpay/api/";
 
+    /** -----------------------EXAMPLE-------------------*/
 
-    public static void wrapper(Context ctx, String route, Map<String,String> params, int method, final NetworkResponse response){
+    public void EXAMPLE(Context ctx, String param1, String param2,final APICallResponse resp){
+        Map<String, String> params = new HashMap<>();
+        params.put("param1", param1);
+        params.put("param2", param2);
+
+        NetworkBase.executeRequest(ctx,"EXROUTE", Request.Method.POST,  params, NetworkBase.getHeaders(ctx), new NetworkResponse() {
+            @Override
+            public void success(JSONObject json) {
+                try {
+
+                    resp.success(new Object());
+                }
+                catch (Exception e) {
+                    resp.error(new APIError("Error parsing json response."));
+                }
+            }
+            @Override
+            public void error(APIError error){ resp.error(error); }
+        });
+    }
+
+    /** -----------------------END EXAMPLE-------------------*/
+
+    public static void executeRequest(Context ctx, String route, int method, Map<String,String> params,final Map<String,String> headers,  final NetworkResponse response){
         String url = NetworkBase.baseURL.concat(route);
 
 
@@ -42,10 +72,32 @@ public class NetworkBase {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                        response.error(error.toString());
+                        try {
+                            byte[] htmlBodyBytes = error.networkResponse.data;
+                            String resp = new String(htmlBodyBytes);
+                            Log.e("TEST",resp);
+                            JSONArray errorArray = new JSONObject(resp).getJSONArray("errors");
+
+                            APIError newAPIError = new APIError();
+                            for (int i = 0; i < errorArray.length(); i++)
+                                newAPIError.append(errorArray.getString(i));
+
+                            response.error(newAPIError);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                            response.error(new APIError("An unknown error occurred."));
+                        }
                     }
-                });
+                })
+                {
+
+                    /** Passing some request headers* */
+                    @Override
+                    public Map<String,String> getHeaders() throws AuthFailureError {
+                        return headers;
+                    }
+                };
 
         // Access the RequestQueue through your singleton class.
         NetworkBase.shared(ctx).addToRequestQueue(jsonObjectRequest);
@@ -70,6 +122,14 @@ public class NetworkBase {
                     cache.put(url, bitmap);
                 }
             });
+    }
+
+    public static Map<String,String> getHeaders(Context ctx){
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("device-id", Util.getUUID(ctx));
+        headers.put("group-code","");//TODO:get group code here, yes you can register with an empty group code
+        return headers;
     }
 
     public static synchronized NetworkBase shared(Context context) {
