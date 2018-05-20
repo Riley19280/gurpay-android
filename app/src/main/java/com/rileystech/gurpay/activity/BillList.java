@@ -16,6 +16,11 @@ import com.rileystech.gurpay.network.APICallResponse;
 import com.rileystech.gurpay.network.NetworkBase;
 import com.rileystech.gurpay.network.ServiceBase;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class BillList extends AppCompatActivity {
 
     @Override
@@ -34,11 +39,18 @@ public class BillList extends AppCompatActivity {
         }
 
 
-        ServiceBase.group.JoinGroup(this.getApplicationContext(), "123456","","androidTest", new APICallResponse() {
+        ServiceBase.group.GetGroupMembers(this.getApplicationContext(), new APICallResponse() {
             @Override
             public void success(Object obj) {
-                Group u = (Group) obj;
-                Log.d("TEST",u.name);
+
+              //  Group g = (Group)obj;
+             //   Log.d("TEST",g.name);
+
+                List<User> members = (ArrayList<User>)obj;
+                for( User u : members) {
+                    Log.d("TEST",u.name);
+                }
+
             }
 
             @Override

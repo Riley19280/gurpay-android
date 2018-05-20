@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 public interface NetworkResponse {
 
-    void success(JSONObject json);
+    void success(String json);
 
     void error(APIError error);
 }

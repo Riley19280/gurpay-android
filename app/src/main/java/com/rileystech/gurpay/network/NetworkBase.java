@@ -11,7 +11,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.rileystech.gurpay.Util;
 import com.rileystech.gurpay.models.APIError;
@@ -33,15 +35,15 @@ public class NetworkBase {
     /** -----------------------EXAMPLE-------------------*/
 
     public void EXAMPLE(Context ctx, String param1, String param2,final APICallResponse resp){
-        Map<String, String> params = new HashMap<>();
+        HashMap<String, String> params = new HashMap<>();
         params.put("param1", param1);
         params.put("param2", param2);
 
         NetworkBase.executeRequest(ctx,"EXROUTE", Request.Method.POST,  params, NetworkBase.getHeaders(ctx), new NetworkResponse() {
             @Override
-            public void success(JSONObject json) {
+            public void success(String json) {
                 try {
-
+                    JSONObject jo = new JSONObject(json);
                     resp.success(new Object());
                 }
                 catch (Exception e) {
@@ -55,17 +57,18 @@ public class NetworkBase {
 
     /** -----------------------END EXAMPLE-------------------*/
 
-    public static void executeRequest(Context ctx, String route, int method, Map<String,String> params,final Map<String,String> headers,  final NetworkResponse response){
+    public static void executeRequest(Context ctx, String route, int method, final HashMap<String,String> params, final Map<String,String> headers, final NetworkResponse response){
         String url = NetworkBase.baseURL.concat(route);
 
 
-        JSONObject parameters = new JSONObject(params);
+        final JSONObject parameters = new JSONObject(params);
 
-        JsonObjectRequest jsonObjectRequest =
-                new JsonObjectRequest(method, url, parameters, new Response.Listener<JSONObject>() {
+        StringRequest stringRequest =
+                new StringRequest(method, url, new Response.Listener<String>() {
 
                     @Override
-                    public void onResponse(JSONObject resp) {
+                    public void onResponse(String resp) {
+                        Log.e("TEST","successful query");
                         response.success(resp);
                     }
                 }, new Response.ErrorListener() {
@@ -92,6 +95,16 @@ public class NetworkBase {
                 })
                 {
 
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        return new JSONObject(params).toString().getBytes();
+                    }
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json";
+                    }
+
                     /** Passing some request headers* */
                     @Override
                     public Map<String,String> getHeaders() throws AuthFailureError {
@@ -100,7 +113,7 @@ public class NetworkBase {
                 };
 
         // Access the RequestQueue through your singleton class.
-        NetworkBase.shared(ctx).addToRequestQueue(jsonObjectRequest);
+        NetworkBase.shared(ctx).addToRequestQueue(stringRequest);
     }
 
     private NetworkBase(Context context) {
@@ -128,7 +141,7 @@ public class NetworkBase {
 
         Map<String, String> headers = new HashMap<>();
         headers.put("device-id", Util.getUUID(ctx));
-        headers.put("group-code","");//TODO:get group code here, yes you can register with an empty group code
+        headers.put("group-code","123456");//TODO:get group code here, yes you can register with an empty group code
         return headers;
     }
 
