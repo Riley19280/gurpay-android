@@ -1,9 +1,10 @@
 package com.rileystech.gurpay.models;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Bill {
+public class Bill implements Serializable {
 
     public int id;
     public int owner_id;

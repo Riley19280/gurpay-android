@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.rileystech.gurpay">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -17,13 +17,18 @@
 
         <activity
             android:name=".activity.SelectGroup"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity android:name=".activity.Dashboard" />
         <activity android:name=".activity.EditUser" />
         <activity android:name=".activity.EditGroup" />
         <activity android:name=".activity.NewBill" />
-        <activity android:name=".activity.BillView"/>
-        <activity android:name=".activity.BillList">
+        <activity android:name=".activity.BillView" android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".activity.BillList" />
+        <activity android:name=".activity.Launch"
+            android:launchMode="singleTask"
+            android:theme="@style/NoUiAppTheme"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

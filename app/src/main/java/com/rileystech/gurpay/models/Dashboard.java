@@ -5,22 +5,22 @@ import java.util.HashMap;
 
 public class Dashboard {
 
-    int myBillCount;
-    int myUnpaidBillCount;
+    public int myBillCount;
+    public int myUnpaidBillCount;
 
-    int myBillsPayerCount;
-    int myBillsPayersPaid;
+    public int myBillsPayerCount;
+    public int myBillsPayersPaid;
 
-    Double myBillsPayerPaidTotal;
-    Double myBillsPayerPaidToDate;
+    public Double myBillsPayerPaidTotal;
+    public Double myBillsPayerPaidToDate;
 
-    Double payTotal;
-    Double payTotalToDate;
+    public Double payTotal;
+    public Double payTotalToDate;
 
-    int payTotalCount;
-    int payTotalCountToDate;
+    public int payTotalCount;
+    public int payTotalCountToDate;
 
-    Date nextDueDate;
+    public Date nextDueDate;
 
     public Dashboard(int mbc, int mubc,int mbpc,int mbpp,Double mbppt,Double mbpptd,Double pt,Double pttd,int ptc,int ptctd,Date ndd) {
         this.myBillCount = mbc;

@@ -46,12 +46,12 @@
                     android:layout_alignParentTop="true"/>
 
                 <TextView
-                    android:id="@+id/ownerabel"
+                    android:id="@+id/ownerLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_above="@+id/dateTitleLayout"
                     android:text="Owner: Jeff"
-                    android:textColor="@color/darkText"
-                    android:layout_above="@+id/dateTitleLayout"/>
+                    android:textColor="@color/darkText" />
 
                 <LinearLayout
                     android:id="@+id/dateTitleLayout"
@@ -70,7 +70,7 @@
                         android:textColor="@color/darkText" />
 
                     <TextView
-                        android:id="@+id/dueOnLabel"
+                        android:id="@+id/dateDueOnLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -134,7 +134,7 @@
                     android:layout_weight="10"
                     android:contentDescription="bill status indicator"
                     app:layout_constraintDimensionRatio="H,1:1"
-                    app:srcCompat="@drawable/bear"
+                    app:srcCompat="@drawable/checkmark"
                     android:layout_margin="4dp"/>
 
                 <TextView

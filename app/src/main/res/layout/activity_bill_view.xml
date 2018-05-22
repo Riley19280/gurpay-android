@@ -51,8 +51,11 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
+                    android:enabled="false"
                     android:hint="Water"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/edit_text_colors" />
             </LinearLayout>
 
             <LinearLayout
@@ -74,8 +77,11 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
+                    android:enabled="false"
                     android:hint="50.65"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"
+                    android:singleLine="true"
+                    android:textColor="@color/edit_text_colors" />
             </LinearLayout>
 
             <LinearLayout
@@ -97,8 +103,11 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
+                    android:enabled="false"
                     android:hint="1-1-18"
-                    android:inputType="date" />
+                    android:inputType="date"
+                    android:singleLine="true"
+                    android:textColor="@color/edit_text_colors" />
             </LinearLayout>
 
             <LinearLayout
@@ -120,9 +129,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
+                    android:enabled="false"
                     android:hint="1-15-18"
-                    android:inputType="date" />
+                    android:inputType="date"
+                    android:singleLine="true"
+                    android:textColor="@color/edit_text_colors" />
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -143,15 +156,17 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="1-30-18" />
+                    android:enabled="false"
+                    android:hint="1-30-18"
+                    android:inputType="date"
+                    android:singleLine="true"
+                    android:textColor="@color/edit_text_colors" />
             </LinearLayout>
-
 
             <TextView
                 android:id="@+id/ownerLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Owner: You"
                 android:textAlignment="viewStart"
                 android:textColor="@color/darkText" />
@@ -161,7 +176,6 @@
                 android:id="@+id/splitCostLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Total Per Person: $0.00"
                 android:textAlignment="viewStart"
                 android:textColor="@color/darkText" />
@@ -201,27 +215,18 @@
                 android:textColor="@color/darkText"
                 android:textSize="20sp" />
 
-            <TableLayout
-                android:id="@+id/payersTableView"
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TableRow
+                <TableLayout
+                    android:id="@+id/payersTableView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="wrap_content">
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                </TableLayout>
+            </ScrollView>
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </TableLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

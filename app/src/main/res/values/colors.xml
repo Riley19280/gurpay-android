@@ -12,8 +12,11 @@
     <color name="lightText">#FFFFFF</color>
     <color name="darkText">#000000</color>
     <color name="backgroundGray">#f0f0f0</color>
+    <color name="disabledGray">#9d9ea4</color>
     <color name="accentGreen">#25d500</color>
     <color name="accentYellow">#ffc600</color>
     <color name="accentRed">#ff1405</color>
+
+
 
 </resources>

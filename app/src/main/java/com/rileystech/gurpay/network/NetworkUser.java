@@ -1,6 +1,7 @@
 package com.rileystech.gurpay.network;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.rileystech.gurpay.models.APIError;
@@ -10,6 +11,7 @@ import com.rileystech.gurpay.models.User;
 import org.json.JSONObject;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,13 +21,15 @@ public class NetworkUser {
     public void getUser(Context ctx, final String ident, final APICallResponse resp){
 
         User u = userCache.get(ident);
-        if(u != null)
+        if(u != null) {
             resp.success(u);
+            return;
+        }
 
         HashMap<String, String> params = new HashMap<>();
         params.put("id", ident);
 
-        NetworkBase.executeRequest(ctx, "user"+ident,  Request.Method.GET, params,NetworkBase.getHeaders(ctx), new NetworkResponse() {
+        NetworkBase.executeRequest(ctx, "user/"+ident,  Request.Method.GET, params,NetworkBase.getHeaders(ctx), new NetworkResponse() {
             @Override
             public void success(String json) {
                 try {
@@ -78,24 +82,29 @@ public class NetworkUser {
             public void success(String json) {
                 try {
                     JSONObject jo = new JSONObject(json);
-
+                    SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Dashboard d = new Dashboard(
                         jo.getInt("myBillCount"),
                         jo.getInt("myUnpaidBillCount"),
+
                         jo.getInt("myBillsPayerCount"),
-                        jo.getInt("myBillsPayersPaidTotal"),
-                        jo.getDouble("myBillsPayerPaidAmount"),
+                        jo.getInt("myBillsPayersPaid"),
+
+                        jo.getDouble("myBillsPayerPaidTotal"),
                         jo.getDouble("myBillsPayerPaidToDate"),
+
                         jo.getDouble("payTotal"),
                         jo.getDouble("payTotalToDate"),
+
                         jo.getInt("payTotalCount"),
                         jo.getInt("payTotalCountToDate"),
-                        Date.valueOf(jo.getString("nextDueDate"))//TODO: this date conversion probably doesn't work
+                        jo.getString("nextDueDate") != "null" ? formatter.parse(jo.getString("nextDueDate")) : null//TODO: this date conversion probably doesn't work
                     );
 
                     resp.success(d);
                 }
                 catch (Exception e) {
+                    Log.e("TEST","json parse error",e);
                     resp.error(new APIError("Error parsing json response."));
                 }
             }

@@ -15,6 +15,12 @@ public class NewBill extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_bill);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null)
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+        getSupportActionBar().setTitle("");
     }
 
     @Override
@@ -27,7 +33,9 @@ public class NewBill extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // action with ID action_refresh was selected
+            case android.R.id.home:
+                onBackPressed();
+                return true;
             case R.id.actionAddPayers:
                 Toast.makeText(this, "Add Payers", Toast.LENGTH_SHORT)
                         .show();

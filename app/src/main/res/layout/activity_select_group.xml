@@ -76,14 +76,14 @@
                 android:hint="Joe" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/groupTextLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Group Code"
                 android:textColor="@color/darkText" />
 
             <EditText
-                android:id="@+id/editText3"
+                android:id="@+id/groupTextField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -96,7 +96,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/darkOrange"
                 android:text="Join!"
-                android:textColor="@color/lightText" />
+                android:textColor="@color/lightText"
+                android:onClick="actionButton"/>
 
             <TextView
                 android:id="@+id/textView4"
@@ -113,7 +114,8 @@
                 android:layout_height="wrap_content"
                 android:background="@color/darkOrange"
                 android:text="Create a Group!"
-                android:textColor="@color/lightText" />
+                android:textColor="@color/lightText"
+                android:onClick="swapButton"/>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

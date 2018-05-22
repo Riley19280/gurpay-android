@@ -2,6 +2,7 @@ package com.rileystech.gurpay.network;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -28,10 +29,16 @@ public class NetworkGroup {
     public void JoinGroup(Context ctx, String code, String groupName, String userName,final APICallResponse resp){
 
         HashMap<String, String> params = new HashMap<>();
-        params.put("group_name", groupName);
+
         params.put("user_name", userName);
-        params.put("group_code", code);
+        if(groupName != null)
+            params.put("group_name", groupName);
+        if(code != null)
+            params.put("group_code", code);
         params.put("platform", "android");
+
+        final SharedPreferences prefs = ctx.getSharedPreferences(
+                "com.rileystech.gurpay", Context.MODE_PRIVATE);
 
         NetworkBase.executeRequest(ctx,"group/join", Request.Method.POST,  params, NetworkBase.getHeaders(ctx), new NetworkResponse() {
             @Override
@@ -39,8 +46,16 @@ public class NetworkGroup {
                 try {
                     JSONObject jo = new JSONObject(json);
                     Group group = new Group(jo.getString("name"), jo.getString("code"));
-                    //TODO:save this group to device storage and then move headers out
-                    resp.success(group);
+
+                    if(prefs.edit().putString("group_code",jo.getString("code")).commit())
+                        if (prefs.edit().putString("group_name", jo.getString("name")).commit()) {
+                           // prefs.edit().putString("user_id",).apply();
+                            resp.success(group);
+                        } else
+                            resp.error(new APIError("Error saving group info."));
+                    else
+                        resp.error(new APIError("Error saving group info."));
+                    
                 }
                 catch (Exception e) {
                     resp.error(new APIError("Error parsing json response"));

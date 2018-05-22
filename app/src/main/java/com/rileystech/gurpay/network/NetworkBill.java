@@ -1,8 +1,11 @@
 package com.rileystech.gurpay.network;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.rileystech.gurpay.Util;
 import com.rileystech.gurpay.models.APIError;
 import com.rileystech.gurpay.models.Bill;
 import com.rileystech.gurpay.models.User;
@@ -11,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 public class NetworkBill {
+
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public void GetBills(Context ctx, boolean archive, final APICallResponse resp){
         HashMap<String, String> params = new HashMap<>();
@@ -45,16 +51,19 @@ public class NetworkBill {
                                 b.getInt("owner_id"),
                                 b.getString("name"),
                                 b.getDouble("total"),
-                                Date.valueOf(b.getString("date_assigned")),
-                                Date.valueOf(b.getString("date_paid")),
-                                Date.valueOf(b.getString("date_due")),
-                                b.getBoolean("is_archive"));
+                                formatter.parse(b.getString("date_assigned")),
+                                b.getString("date_paid") != "null" ? formatter.parse(b.getString("date_paid")) : null,
+                                formatter.parse(b.getString("date_due")),
+                                b.getInt("archived") == 1 );
+
+                        bill.split_cost = b.getDouble("split_cost");
+                        bill.subtotal = b.getDouble("subtotal");
 
                         JSONArray payers = b.getJSONArray("payers");
                         for( int j = 0; j < payers.length(); j++) {
                             JSONObject u = payers.getJSONObject(j);
                             User user = new User(u.getInt("id"),u.getString("name"));
-                            bill.payers.put(user,u.getJSONObject("pivot").getBoolean("has_paid"));
+                            bill.payers.put(user,u.getJSONObject("pivot").getInt("has_paid")==1);
                         }
 
                         bills.add(bill);
@@ -63,6 +72,7 @@ public class NetworkBill {
                     resp.success(bills);
                 }
                 catch (Exception e) {
+                    Log.e("TEST","",e);
                     resp.error(new APIError("Error parsing json response."));
                 }
             }
@@ -92,7 +102,7 @@ public class NetworkBill {
                             Date.valueOf(b.getString("date_assigned")),
                             Date.valueOf(b.getString("date_paid")),
                             Date.valueOf(b.getString("date_due")),
-                            b.getBoolean("is_archive"));
+                            b.getInt("archived") == 1);
                     bill.subtotal = b.getDouble("subtotal");
                     bill.split_cost = b.getDouble("split_cost");
                     resp.success(bill);
@@ -125,14 +135,29 @@ public class NetworkBill {
         HashMap<String, String> params = new HashMap<>();
         params.put("name", bill.name);
         params.put("total", bill.total.toString());
-        params.put("date_assigned", bill.date_assigned.toString());
-        params.put("date_due", bill.date_due.toString());
-        params.put("date_paid", bill.date_paid.toString());
+        params.put("date_assigned", Util.dateForAPI(bill.date_assigned));
+        params.put("date_due", Util.dateForAPI(bill.date_due));
+        params.put("date_paid", Util.dateForAPI(bill.date_paid));
 
         NetworkBase.executeRequest(ctx,"bill/"+bill.id, Request.Method.PUT,  params, NetworkBase.getHeaders(ctx), new NetworkResponse() {
             @Override
             public void success(String json) {
-                resp.success(null);
+                try {
+                    JSONObject b = new JSONObject(json);
+                    Bill bill = new Bill(
+                            b.getInt("id"),
+                            b.getInt("owner_id"),
+                            b.getString("name"),
+                            b.getDouble("total"),
+                            Date.valueOf(b.getString("date_assigned")),
+                            Date.valueOf(b.getString("date_paid")),
+                            Date.valueOf(b.getString("date_due")),
+                            b.getInt("archived") == 1);
+                    resp.success(bill);
+                }
+                catch (Exception e) {
+                    resp.error(new APIError("Error parsing json response."));
+                }
             }
             @Override
             public void error(APIError error){ resp.error(error); }

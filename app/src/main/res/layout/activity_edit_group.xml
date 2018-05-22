@@ -49,17 +49,20 @@
                     android:textColor="@color/darkText" />
 
                 <EditText
-                    android:id="@+id/editText"
+                    android:id="@+id/editGroupNameField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Joe"
-                    android:inputType="text|textPersonName" />
+                    android:hint="Group Name"
+                    android:inputType="text" />
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/changeUserNameButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/disabledGray"
+                    android:enabled="false"
+                    android:onClick="changeButton"
                     android:text="Change" />
             </LinearLayout>
 
@@ -76,30 +79,31 @@
                     android:id="@+id/toArchiveButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8px"
                     android:background="@color/darkOrange"
+                    android:onClick="currentToArchive"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:text="Move current bills to archive"
                     android:textColor="@color/lightText"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginBottom="8px"/>
+                    app:layout_constraintRight_toRightOf="parent" />
 
                 <Button
                     android:id="@+id/leaveButton2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8px"
                     android:background="@color/darkOrange"
+                    android:onClick="duplicateCurrent"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
                     android:text="Duplicate all bills for next month"
                     android:textColor="@color/lightText"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginBottom="8px"
-                    />
+                    app:layout_constraintRight_toRightOf="parent" />
 
                 <TextView
                     android:id="@+id/groupCodeLabel"
