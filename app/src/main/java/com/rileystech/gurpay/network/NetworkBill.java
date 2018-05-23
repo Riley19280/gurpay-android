@@ -81,31 +81,50 @@ public class NetworkBill {
         });
     }
 
-    public void CreateBill(Context ctx,Bill bill,final APICallResponse resp){
+    public void CreateBill(final Context ctx,final Bill bill,final APICallResponse resp){
         HashMap<String, String> params = new HashMap<>();
         params.put("name", bill.name);
         params.put("total", bill.total.toString());
-        params.put("date_assigned", bill.date_assigned.toString());
-        params.put("date_due", bill.date_due.toString());
-        params.put("date_paid", bill.date_paid.toString());
+        params.put("date_assigned", Util.dateForAPI(bill.date_assigned));
+        params.put("date_due", Util.dateForAPI(bill.date_due));
+        params.put("date_paid", null);
 
         NetworkBase.executeRequest(ctx,"bill", Request.Method.POST,  params, NetworkBase.getHeaders(ctx), new NetworkResponse() {
             @Override
             public void success(String json) {
                 try {
-                    JSONObject b = new JSONObject(json);
-                    Bill bill = new Bill(
+                     JSONObject b = new JSONObject(json);
+                    Bill bill2 = new Bill(
                             b.getInt("id"),
                             b.getInt("owner_id"),
                             b.getString("name"),
                             b.getDouble("total"),
-                            Date.valueOf(b.getString("date_assigned")),
-                            Date.valueOf(b.getString("date_paid")),
-                            Date.valueOf(b.getString("date_due")),
+                            Util.parseServerDate(b.getString("date_assigned")),
+                            Util.parseServerDate(b.getString("date_paid")),
+                            Util.parseServerDate(b.getString("date_due")),
                             b.getInt("archived") == 1);
-                    bill.subtotal = b.getDouble("subtotal");
-                    bill.split_cost = b.getDouble("split_cost");
-                    resp.success(bill);
+                    //bill.subtotal = b.getDouble("subtotal");
+                    //bill.split_cost = b.getDouble("split_cost");
+
+                    List<User> users = new ArrayList<>();
+
+                    for (HashMap.Entry<User, Boolean> user : bill.payers.entrySet()) {
+                       users.add(user.getKey());
+                    }
+                    AddPayers(ctx, bill2, users, new APICallResponse() {
+                        @Override
+                        public void success(Object obj) {
+
+                        }
+
+                        @Override
+                        public void error(APIError err) {
+                            super.error(err);
+                        }
+                    });
+
+
+                    resp.success(null);
                 }
                 catch (Exception e) {
                     resp.error(new APIError("Error parsing json response."));
@@ -200,13 +219,14 @@ public class NetworkBill {
         HashMap<String, String> params = new HashMap<>();
 
         for(User u : users)
-            NetworkBase.executeRequest(ctx,"bill/"+bill.id+"/payer/"+u.id, Request.Method.POST,  params, NetworkBase.getHeaders(ctx), new NetworkResponse() {
+            NetworkBase.executeRequest(ctx,"bill/"+bill.id+"/payer/"+u.id, Request.Method.DELETE,  params, NetworkBase.getHeaders(ctx), new NetworkResponse() {
                 @Override
                 public void success(String json) {
                     try {
                         resp.success(null);
                     }
                     catch (Exception e) {
+                        Log.e("TEST","",e);
                         resp.error(new APIError("Error parsing json response."));
                     }
                 }

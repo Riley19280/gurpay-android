@@ -19,6 +19,8 @@ import com.rileystech.gurpay.models.APIError;
 import com.rileystech.gurpay.network.APICallResponse;
 import com.rileystech.gurpay.network.ServiceBase;
 
+import java.text.SimpleDateFormat;
+
 public class Dashboard extends AppCompatActivity {
     TextView unpaidCount;
     TextView nextDueLabel;
@@ -66,10 +68,11 @@ public class Dashboard extends AppCompatActivity {
         ServiceBase.user.GetDashboard(ctx, new APICallResponse() {
             @Override
             public void success(Object obj) {
+                SimpleDateFormat formatter = new SimpleDateFormat("EEE, MMM d");
                 com.rileystech.gurpay.models.Dashboard d = (com.rileystech.gurpay.models.Dashboard)obj;
                 unpaidCount.setText(Integer.toString(d.myUnpaidBillCount));
                 if(d.nextDueDate != null)
-                    nextDueLabel.setText(String.format("Next bill due on %s", d.nextDueDate));
+                    nextDueLabel.setText(String.format("Next bill due on %s", formatter.format(d.nextDueDate)));
                 else
                     nextDueLabel.setText("");
                 recievedToDateLabel.setText(String.format("You have recieved $%.2f/%.2f from %d/%d people.", d.myBillsPayerPaidToDate,d.myBillsPayerPaidTotal,d.myBillsPayersPaid,d.myBillsPayerCount));

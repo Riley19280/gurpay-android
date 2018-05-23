@@ -22,4 +22,18 @@ public class User implements Serializable{
         this.group_code = group_code;
     }
 
+    @Override
+    public int hashCode(){
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (this == o) return true;
+        if (o == null) return false;
+        if (this.getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return user.id == this.id;
+    }
+
 }

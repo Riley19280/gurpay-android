@@ -3,6 +3,7 @@ package com.rileystech.gurpay.network;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -138,6 +139,7 @@ public class NetworkGroup {
                     resp.success(users);
                 }
                 catch (Exception e) {
+                    Log.e("TEST","",e);
                     resp.error(new APIError("Error parsing json response."));
                 }
             }

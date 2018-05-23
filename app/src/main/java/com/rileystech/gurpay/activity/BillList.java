@@ -50,6 +50,15 @@ public class BillList extends AppCompatActivity {
 
         table = (TableLayout)BillList.this.findViewById(R.id.table);
 
+        //loadData();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+     //   while(table.getChildCount() != 0)
+     //       table.removeView(table.getChildAt(0));
+
         loadData();
     }
 
@@ -61,9 +70,24 @@ public class BillList extends AppCompatActivity {
             public void success(Object obj) {
                 List<Bill> bills = (List<Bill>)obj;
 
+                while(bills.size() < table.getChildCount())
+                    table.removeView(table.getChildAt(table.getChildCount()-1));
+
+                int count = -1;
                  for(final Bill b : bills) {
+                     count ++;
+                     boolean newRow = false;
                      // Inflate your row "template" and fill out the fields.
-                     final TableRow row = (TableRow) LayoutInflater.from(BillList.this).inflate(R.layout.element_bill_table_row, null);
+                     TableRow temp;
+                     if(table.getChildAt(count) != null)
+                         temp = (TableRow)table.getChildAt(count);
+                     else
+                     {
+                         temp = (TableRow) LayoutInflater.from(BillList.this).inflate(R.layout.element_bill_table_row, null);
+                         newRow = true;
+                     }
+
+                     final TableRow row = temp;
                      ((TextView)row.findViewById(R.id.titleLabel)).setText(b.name);
 
                      ((TextView)row.findViewById(R.id.dateAssignedDateLabel)).setText(Util.displayDate(b.date_assigned));
@@ -83,8 +107,6 @@ public class BillList extends AppCompatActivity {
                              ((ImageView)row.findViewById(R.id.imageView)).setColorFilter(Color.parseColor("#25d500"), PorterDuff.Mode.SRC_ATOP);
                          }
                      }
-
-                     row.setClickable(true);
                      row.setOnClickListener(new View.OnClickListener() {
                          @Override
                          public void onClick(View v) {
@@ -107,8 +129,8 @@ public class BillList extends AppCompatActivity {
                          }
                      });
 
-
-                     table.addView(row);
+                    if(newRow)
+                        table.addView(row);
                  }
 
             }

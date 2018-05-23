@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -22,9 +24,12 @@ import com.rileystech.gurpay.network.*;
 import com.rileystech.gurpay.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class BillView extends AppCompatActivity {
 
@@ -88,6 +93,7 @@ public class BillView extends AppCompatActivity {
             final TableRow row = (TableRow) LayoutInflater.from(BillView.this).inflate(R.layout.element_payer_table_row, null);
             ((TextView)row.findViewById(R.id.nameLabel)).setText(u.getKey().name);
             ((TextView)row.findViewById(R.id.statusLabel)).setText(u.getValue() ? "Paid" : "Unpaid");
+            row.setTag(u.getKey());
             table.addView(row);
         }
 
@@ -106,25 +112,37 @@ public class BillView extends AppCompatActivity {
             public void success(Object obj) {
                 User user = (User)obj;
 
-                if(bill.date_paid != null){
-                    int count = 0;
-                    for(HashMap.Entry<User,Boolean> u : bill.payers.entrySet()) {
-                        if(!u.getValue()){
-                            count++;
+                if(user.id == bill.owner_id) {
+                    if(bill.date_paid != null){
+                        int count = 0;
+                        for(HashMap.Entry<User,Boolean> u : bill.payers.entrySet()) {
+                            if(!u.getValue()){
+                                count++;
+                            }
+                        }
+                        if (count == 0) {
+                            inflater.inflate(R.menu.menu_bill_view_archive, menu);
+                            editMenuItem = menu.getItem(0);
+                        }else {
+                            inflater.inflate(R.menu.menu_bill_view_editor, menu);
+                            editMenuItem = menu.getItem(0);
                         }
                     }
-                    if (count == 0) {
-                        inflater.inflate(R.menu.menu_bill_view_archive, menu);
-                        editMenuItem = menu.getItem(0);
-                    }else {
+                    else {
                         inflater.inflate(R.menu.menu_bill_view_editor, menu);
                         editMenuItem = menu.getItem(0);
                     }
                 }
                 else {
-                    inflater.inflate(R.menu.menu_bill_view_editor, menu);
-                    editMenuItem = menu.getItem(0);
+                    for(HashMap.Entry<User,Boolean> u : bill.payers.entrySet()) {
+                        if(u.getKey().id == user.id){
+                            inflater.inflate(R.menu.menu_bill_view_payer, menu);
+                            return;
+                        }
+                    }
                 }
+
+
 
             }
 
@@ -164,6 +182,27 @@ public class BillView extends AppCompatActivity {
         return true;
     }
 
+    public void buttonRemovePayer(View view) {
+        final Context ctx = this.getApplicationContext();
+        final TableRow row = (TableRow)view.getParent();
+        final User u = (User)row.getTag();
+
+        ServiceBase.bill.DeletePayers(ctx, bill, Arrays.asList(u), new APICallResponse() {
+            @Override
+            public void success(Object obj) {
+                //bill.payers.remove(u);
+
+                    bill.payers.remove(u);
+                    table.removeView(row);
+
+            }
+
+            @Override
+            public void error(APIError err) {
+                Toast.makeText(ctx,"Unable to remove payer.\n"+err.toString(),Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
     void actionDelete(){
         final Context ctx = this.getApplicationContext();
@@ -217,7 +256,10 @@ public class BillView extends AppCompatActivity {
         });
     }
 
+    private TableRow addTableRowButton;
     void actionEdit(){
+        final Context ctx = this.getApplicationContext();
+        final BillView billView = this;
         if(editing == false) {
             editing = true;
             editMenuItem.setTitle("Finish editing");
@@ -226,6 +268,63 @@ public class BillView extends AppCompatActivity {
             dateAssignedField.setEnabled(true);
             datePaidField.setEnabled(true);
             dateDueField.setEnabled(true);
+
+            addTableRowButton = new TableRow(this);
+            addTableRowButton.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+            Button b = new Button(this);
+            b.setText("Add Payers");
+            b.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT,1f));
+            b.setBackgroundColor(getResources().getColor(R.color.darkOrange));
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    List<User> filter = new ArrayList<>();
+                    for(HashMap.Entry<User,Boolean> b : bill.payers.entrySet())
+                        filter.add(b.getKey());
+
+                    Util.payersSelect(billView, filter, new APICallResponse() {
+                        @Override
+                        public void success(Object obj) {
+                            final User u = (User)obj;
+
+                            ServiceBase.bill.AddPayers(ctx, bill, Arrays.asList(u), new APICallResponse() {
+                                @Override
+                                public void success(Object obj) {
+                                    bill.payers.put(u,false);
+                                    final TableRow row = (TableRow) LayoutInflater.from(BillView.this).inflate(R.layout.element_payer_table_row, null);
+                                    ((TextView)row.findViewById(R.id.nameLabel)).setText(u.name);
+                                    ((TextView)row.findViewById(R.id.statusLabel)).setText("Unpaid");
+                                    row.setTag(u);
+                                    row.findViewById(R.id.removeButton).setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+                                    table.addView(row,table.getChildCount()-1);
+                                }
+
+                                @Override
+                                public void error(APIError err) {
+                                    Toast.makeText(ctx,"Error adding payer.\n"+err.toString(),Toast.LENGTH_LONG).show();
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void error(APIError err) {
+                            Toast.makeText(ctx,"Unable to get payers.\n"+err.toString(),Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            });
+            addTableRowButton.addView(b);
+
+            for(int i = 0; i < table.getChildCount(); i++) {
+                TableRow row = (TableRow)table.getChildAt(i);
+                row.findViewById(R.id.removeButton).setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+            }
+
+
+            table.addView(addTableRowButton, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+
         }
         else {
             HashMap<Boolean,Date> hA = Util.parseDate(dateAssignedField.getText().toString());
@@ -255,22 +354,26 @@ public class BillView extends AppCompatActivity {
                 return;
             }
 
-
-            final Context ctx = this.getApplicationContext();
             ServiceBase.bill.UpdateBill(ctx, bill, new APICallResponse() {
                 @Override
                 public void success(Object obj) {
                     editing = false;
                     editMenuItem.setTitle("Edit bill");
                     Bill b = (Bill)obj;
-                    b.split_cost = b.total/b.payers.size()+1;
-                    splitCostLabel.setText(String.format("Total per Person: %.2f",b.split_cost));
+                    b.split_cost = b.total/(bill.payers.size()+1);
+                    splitCostLabel.setText(String.format("Total per person: %.2f",b.split_cost));
 
                     nameField.setEnabled(false);
                     totalField.setEnabled(false);
                     dateAssignedField.setEnabled(false);
                     datePaidField.setEnabled(false);
                     dateDueField.setEnabled(false);
+
+                    table.removeView(addTableRowButton);
+                    for(int i = 0; i < table.getChildCount(); i++) {
+                        TableRow row = (TableRow)table.getChildAt(i);
+                        ((Button)row.findViewById(R.id.removeButton)).setLayoutParams(new TableRow.LayoutParams(0, 0));
+                    }
                 }
 
                 @Override

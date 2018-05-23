@@ -20,6 +20,8 @@ public class Bill implements Serializable {
     public Double split_cost;
     public HashMap<User,Boolean> payers = new HashMap<>();
 
+    public Bill(){}
+
     public Bill(int id, int owner_id, String name,Double total, Date dateAssigned, Date datePaid, Date dateDue){
         this(id,owner_id,name,total,dateAssigned,datePaid,dateDue,false);
 
