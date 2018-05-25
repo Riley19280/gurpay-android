@@ -1,6 +1,7 @@
 package com.rileystech.gurpay.network;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
 import android.util.Log;
@@ -138,10 +139,11 @@ public class NetworkBase {
     }
 
     public static Map<String,String> getHeaders(Context ctx){
+        SharedPreferences prefs = ctx.getSharedPreferences("com.rileystech.gurpay",Context.MODE_PRIVATE);
 
         Map<String, String> headers = new HashMap<>();
         headers.put("device-id", Util.getUUID(ctx));
-        headers.put("group-code","123456");//TODO:get group code here, yes you can register with an empty group code
+        headers.put("group-code",prefs.getString("group_code",""));
         return headers;
     }
 

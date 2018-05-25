@@ -45,10 +45,13 @@ public class NewBill extends AppCompatActivity {
         setContentView(R.layout.activity_new_bill);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null)
+        if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("");
+        }
 
-        getSupportActionBar().setTitle("");
+
+
 
         table = this.findViewById(R.id.payersTableView);
 

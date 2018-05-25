@@ -33,7 +33,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/billNameLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Bill Name"
@@ -49,7 +48,6 @@
                 android:inputType="text" />
 
             <TextView
-                android:id="@+id/totalLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Total"
@@ -65,7 +63,6 @@
                 android:inputType="numberDecimal" />
 
             <TextView
-                android:id="@+id/startDateLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Start Date (MM-DD-YY)"
@@ -81,7 +78,6 @@
                 android:inputType="date" />
 
             <TextView
-                android:id="@+id/dueDateLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Due Date (MM-DD-YY)"
@@ -97,7 +93,6 @@
                 android:inputType="date" />
 
             <TextView
-                android:id="@+id/payersLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Payers:"

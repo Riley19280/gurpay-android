@@ -2,8 +2,10 @@ package com.rileystech.gurpay.activity;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -34,12 +36,13 @@ public class EditUser extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null)
+        if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("Edit User");
+        }
 
-        getSupportActionBar().setTitle("Edit User");
 
-        userNameEdit = this.findViewById(R.id.editUserNameField);
+        userNameEdit = this.findViewById(R.id.nameField);
         changeButton = this.findViewById(R.id.changeButton);
 
         userNameEdit.addTextChangedListener(new TextWatcher() {
@@ -105,22 +108,41 @@ public class EditUser extends AppCompatActivity {
 
     public void leaveButton(View view) {
         final Context ctx = this.getApplicationContext();
-        ServiceBase.group.LeaveGroup(ctx, new APICallResponse() {
-            @Override
-            public void success(Object obj) {
-                SharedPreferences prefs = ctx.getSharedPreferences("com.rileystech.gurpay",MODE_PRIVATE);
-                prefs.edit().clear().apply();
-                Intent intent = new Intent(ctx, SelectGroup.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                finish();
-                startActivity(intent);
-            }
 
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
-            public void error(APIError err) {
-               Toast.makeText(ctx,"Error leaving group.",Toast.LENGTH_LONG).show();
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        ServiceBase.group.LeaveGroup(ctx, new APICallResponse() {
+                            @Override
+                            public void success(Object obj) {
+                                SharedPreferences prefs = ctx.getSharedPreferences("com.rileystech.gurpay",MODE_PRIVATE);
+                                prefs.edit().clear().apply();
+                                Intent intent = new Intent(ctx, SelectGroup.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                finish();
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void error(APIError err) {
+                                Toast.makeText(ctx,"Error leaving group.",Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        break;
+                }
             }
-        });
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to leave the group? All of your bills you own will be deleted.").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
+
     }
 
     @Override

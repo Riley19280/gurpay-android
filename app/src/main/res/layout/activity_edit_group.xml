@@ -42,22 +42,22 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/editGroupLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Edit Name"
                     android:textColor="@color/darkText" />
 
                 <EditText
-                    android:id="@+id/editGroupNameField"
+                    android:id="@+id/nameField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="Group Name"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:singleLine="true" />
 
                 <Button
-                    android:id="@+id/changeUserNameButton"
+                    android:id="@+id/changeButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/disabledGray"
@@ -76,7 +76,7 @@
                 app:layout_constraintRight_toRightOf="parent">
 
                 <Button
-                    android:id="@+id/toArchiveButton"
+                    android:id="@+id/archiveButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8px"
@@ -91,7 +91,7 @@
                     app:layout_constraintRight_toRightOf="parent" />
 
                 <Button
-                    android:id="@+id/leaveButton2"
+                    android:id="@+id/duplicateButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8px"

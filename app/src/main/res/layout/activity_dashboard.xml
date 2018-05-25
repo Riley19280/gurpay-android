@@ -56,7 +56,7 @@
                         app:contentPadding="8dp">
 
                         <TextView
-                            android:id="@+id/unpaidBillsCount"
+                            android:id="@+id/unpaidBillsCountLabel"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="0"
@@ -66,7 +66,6 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/unpaidBills"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -74,7 +73,7 @@
                             android:textAlignment="center" />
 
                         <TextView
-                            android:id="@+id/nextDueLabel"
+                            android:id="@+id/nextDueDateLabel"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Next bill due on 11/27/18"
@@ -93,7 +92,7 @@
                     app:contentPadding="8dp">
 
                     <TextView
-                        android:id="@+id/recievedToDateLabel"
+                        android:id="@+id/recievedMessageLabel"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -115,7 +114,7 @@
                 app:contentPadding="8dp">
 
                 <TextView
-                    android:id="@+id/paidToDateLabel"
+                    android:id="@+id/paidMessageLabel"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"

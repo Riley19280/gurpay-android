@@ -42,18 +42,18 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/editNameLabel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Edit Name" />
 
                 <EditText
-                    android:id="@+id/editUserNameField"
+                    android:id="@+id/nameField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="Name"
-                    android:inputType="text|textPersonName" />
+                    android:inputType="text|textPersonName"
+                    android:singleLine="true" />
 
                 <Button
                     android:id="@+id/changeButton"

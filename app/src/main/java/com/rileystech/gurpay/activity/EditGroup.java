@@ -1,6 +1,5 @@
 package com.rileystech.gurpay.activity;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -20,13 +19,11 @@ import com.rileystech.gurpay.models.Group;
 import com.rileystech.gurpay.network.APICallResponse;
 import com.rileystech.gurpay.network.ServiceBase;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 public class EditGroup extends AppCompatActivity {
 
-    TextView groupNameEdit;
+    TextView nameField;
     Button changeButton;
     TextView groupCodeLabel;
 
@@ -37,21 +34,22 @@ public class EditGroup extends AppCompatActivity {
         setContentView(R.layout.activity_edit_group);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null)
+        if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("Manage Group");
+        }
 
-        getSupportActionBar().setTitle("Manage Group");
 
-        groupNameEdit = this.findViewById(R.id.editGroupNameField);
-        changeButton = this.findViewById(R.id.changeUserNameButton);
+        nameField = this.findViewById(R.id.nameField);
+        changeButton = this.findViewById(R.id.changeButton);
         groupCodeLabel = this.findViewById(R.id.groupCodeLabel);
 
         final SharedPreferences prefs = this.getSharedPreferences("com.rileystech.gurpay",MODE_PRIVATE);
-        groupNameEdit.setText(prefs.getString("group_name",""));
+        nameField.setText(prefs.getString("group_name",""));
 
         groupCodeLabel.setText("Group Code: " + prefs.getString("group_code",""));
 
-        groupNameEdit.addTextChangedListener(new TextWatcher() {
+        nameField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
@@ -78,13 +76,13 @@ public class EditGroup extends AppCompatActivity {
     public void changeButton(View view) {
         final SharedPreferences prefs = this.getSharedPreferences("com.rileystech.gurpay",MODE_PRIVATE);
         final Context ctx = this.getApplicationContext();
-        Group g = new Group(groupNameEdit.getText().toString(),prefs.getString("group_code",null));
+        Group g = new Group(nameField.getText().toString(),prefs.getString("group_code",null));
         ServiceBase.group.EditGoup(ctx, g, new APICallResponse() {
             @Override
             public void success(Object obj) {
-                prefs.edit().putString("group_name",groupNameEdit.getText().toString()).apply();
+                prefs.edit().putString("group_name", nameField.getText().toString()).apply();
                 //reupdate the button
-                if(prefs.getString("group_name","").equals(groupNameEdit.getText().toString().toString())){
+                if(prefs.getString("group_name","").equals(nameField.getText().toString().toString())){
                     changeButton.setEnabled(false);
                     changeButton.setBackgroundResource(R.color.disabledGray);
                 }

@@ -107,6 +107,9 @@ public class BillView extends AppCompatActivity {
         final MenuInflater inflater = getMenuInflater();
         final Context ctx = this.getApplicationContext();
 
+        if(bill.is_archive)
+            return false;
+
         ServiceBase.user.getUser(ctx, Util.getUUID(ctx), new APICallResponse() {
             @Override
             public void success(Object obj) {
@@ -165,6 +168,9 @@ public class BillView extends AppCompatActivity {
             case R.id.actionDeleteBill:
               actionDelete();
                 break;
+            case R.id.actionArchiveBill:
+                actionArchive();
+                break;
             // action with ID action_settings was selected
             case R.id.actionDuplicateBill:
                 actionDuplicate();
@@ -209,7 +215,7 @@ public class BillView extends AppCompatActivity {
         ServiceBase.bill.DeleteBill(ctx, bill, new APICallResponse() {
             @Override
             public void success(Object obj) {
-
+                finish();
                 Toast.makeText(ctx,"Bill deleted.",Toast.LENGTH_LONG).show();
             }
 
@@ -385,6 +391,22 @@ public class BillView extends AppCompatActivity {
         }
 
 
+    }
+
+    void actionArchive(){
+        final Context ctx = this.getApplicationContext();
+        ServiceBase.bill.ArchiveBills(ctx, Arrays.asList(bill), new APICallResponse() {
+            @Override
+            public void success(Object obj) {
+
+                Toast.makeText(ctx,"Bill Archived.",Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void error(APIError err) {
+                Toast.makeText(ctx,"Error archiving bill.",Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 }

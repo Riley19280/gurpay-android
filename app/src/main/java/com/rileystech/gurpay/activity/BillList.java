@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rileystech.gurpay.R;
 import com.rileystech.gurpay.Util;
@@ -43,21 +44,18 @@ public class BillList extends AppCompatActivity {
         setContentView(R.layout.activity_bill_list);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null)
+        if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-
-        getSupportActionBar().setTitle("Group Bills");
+            getSupportActionBar().setTitle("Group Bills");
+        }
 
         table = (TableLayout)BillList.this.findViewById(R.id.table);
 
-        //loadData();
     }
 
     @Override
     public void onResume(){
         super.onResume();
-     //   while(table.getChildCount() != 0)
-     //       table.removeView(table.getChildAt(0));
 
         loadData();
     }
@@ -90,8 +88,8 @@ public class BillList extends AppCompatActivity {
                      final TableRow row = temp;
                      ((TextView)row.findViewById(R.id.titleLabel)).setText(b.name);
 
-                     ((TextView)row.findViewById(R.id.dateAssignedDateLabel)).setText(Util.displayDate(b.date_assigned));
-                     ((TextView)row.findViewById(R.id.dateDueDateLabel)).setText(Util.displayDate(b.date_due));
+                     ((TextView)row.findViewById(R.id.dateAssignedLabel)).setText(Util.displayDate(b.date_assigned));
+                     ((TextView)row.findViewById(R.id.dateDueLabel)).setText(Util.displayDate(b.date_due));
                      ((TextView)row.findViewById(R.id.paidToDateLabel)).setText(String.format("$%.2f/%.2f",b.subtotal,b.total));
 
                      if(b.date_paid != null){
@@ -137,7 +135,7 @@ public class BillList extends AppCompatActivity {
 
             @Override
             public void error(APIError err) {
-
+                Toast.makeText(ctx,"Unable to get bills.",Toast.LENGTH_LONG).show();
             }
         });
     }

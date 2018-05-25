@@ -73,7 +73,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Joe" />
+                android:hint="Joe"
+                android:inputType="text"
+                android:singleLine="true" />
 
             <TextView
                 android:id="@+id/groupTextLabel"
@@ -88,7 +90,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="159632"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:singleLine="true" />
 
             <Button
                 android:id="@+id/actionButton"
@@ -100,7 +103,6 @@
                 android:onClick="actionButton"/>
 
             <TextView
-                android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="or"

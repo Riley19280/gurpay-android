@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Request;
+import com.rileystech.gurpay.Util;
 import com.rileystech.gurpay.models.APIError;
 import com.rileystech.gurpay.models.Dashboard;
 import com.rileystech.gurpay.models.User;
@@ -52,7 +53,7 @@ public class NetworkUser {
 
     }
 
-    public void UpdateUser(Context ctx, String name, final APICallResponse resp){
+    public void UpdateUser(final Context ctx, String name, final APICallResponse resp){
         HashMap<String, String> params = new HashMap<>();
         params.put("name", name);
 
@@ -62,7 +63,7 @@ public class NetworkUser {
                 try {
                     JSONObject jo = new JSONObject(json);
                     User u = new User(jo.getInt("id"),jo.getString("name"));
-
+                    userCache.put(Util.getUUID(ctx),u);
                     resp.success(u);
                 }
                 catch (Exception e) {

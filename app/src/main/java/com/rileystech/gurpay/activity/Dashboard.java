@@ -34,10 +34,10 @@ public class Dashboard extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
 
-        unpaidCount = ((TextView)this.findViewById(R.id.unpaidBillsCount));
-        nextDueLabel = ((TextView)this.findViewById(R.id.nextDueLabel));
-        recievedToDateLabel = ((TextView)this.findViewById(R.id.recievedToDateLabel));
-        paidToDateLabel = ((TextView)this.findViewById(R.id.paidToDateLabel));
+        unpaidCount = ((TextView)this.findViewById(R.id.unpaidBillsCountLabel));
+        nextDueLabel = ((TextView)this.findViewById(R.id.nextDueDateLabel));
+        recievedToDateLabel = ((TextView)this.findViewById(R.id.recievedMessageLabel));
+        paidToDateLabel = ((TextView)this.findViewById(R.id.paidMessageLabel));
 
     }
 
@@ -61,8 +61,10 @@ public class Dashboard extends AppCompatActivity {
 
     void initialize(){
         SharedPreferences prefs = this.getSharedPreferences("com.rileystech.gurpay",MODE_PRIVATE);
-        getSupportActionBar().setTitle(prefs.getString("group_name",""));
-
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            getSupportActionBar().setTitle(prefs.getString("group_name", ""));
+        }
         final Context ctx = this.getApplicationContext();
 
         ServiceBase.user.GetDashboard(ctx, new APICallResponse() {
