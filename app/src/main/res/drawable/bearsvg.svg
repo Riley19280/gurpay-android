@@ -1,35 +1,13 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aapt="http://schemas.android.com/aapt"
-    android:width="108dp"
-    android:height="108dp"
-    android:viewportHeight="1080"
-    android:viewportWidth="1080">
-    <path
-        android:fillType="evenOdd"
-        android:pathData="M32,64C32,64 38.39,52.99 44.13,50.95C51.37,48.37 70.14,49.57 70.14,49.57L108.26,87.69L108,109.01L75.97,107.97L32,64Z"
-        android:strokeColor="#00000000"
-        android:strokeWidth="1">
-        <aapt:attr name="android:fillColor">
-            <gradient
-                android:endX="78.5885"
-                android:endY="90.9159"
-                android:startX="48.7653"
-                android:startY="61.0927"
-                android:type="linear">
-                <item
-                    android:color="#44000000"
-                    android:offset="0.0" />
-                <item
-                    android:color="#00000000"
-                    android:offset="1.0" />
-            </gradient>
-        </aapt:attr>
-    </path>
-    <path
-        android:fillColor="#FFFFFF"
-        android:fillType="nonZero"
-        android:pathData="M0 6395 l0 -6395 6400 0 6400 0 0 6395 0 6395 -6400 0 -6400 0 0
--6395z m10083 3423 c173 -83 267 -253 246 -448 -3 -30 -5 -56 -3 -58 1 -2 59
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+ "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="108.000000pt" height="108.000000pt" viewBox="0 0 108.000000 108.000000"
+ preserveAspectRatio="xMidYMid meet">
+
+<g transform="translate(5.000000,55.000000) scale(0.0050000,-0.00500000)"
+fill="#FFFFFF" stroke="none">
+<path d="m10083 3423 c173 -83 267 -253 246 -448 -3 -30 -5 -56 -3 -58 1 -2 59
 -12 128 -22 153 -22 206 -39 286 -91 160 -103 260 -280 260 -459 l0 -65 391
 -210 c260 -140 403 -223 429 -248 53 -53 83 -133 78 -212 -3 -49 -21 -99 -102
 -279 -53 -121 -110 -238 -127 -262 -39 -57 -110 -117 -189 -158 -106 -56 -24
@@ -51,6 +29,6 @@ c-253 -3 -304 -1 -358 13 -69 19 -160 74 -208 126 -34 37 -571 958 -611 1048
 -235 152 -274 494 -80 698 60 63 1358 969 1506 1051 221 124 500 208 765 231
 56 5 837 7 1770 4 l1670 -4 260 41 c143 23 301 48 350 56 50 8 430 69 845 135
 415 66 802 128 859 138 l104 17 4 65 c6 82 33 160 80 228 41 60 86 98 160 136
-75 38 116 46 215 42 75 -3 98 -8 161 -38z"
-        />
-</vector>
+75 38 116 46 215 42 75 -3 98 -8 161 -38z"/>
+</g>
+</svg>
